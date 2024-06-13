@@ -21,8 +21,10 @@ namespace Infrastructure
 
             ArgumentNullException.ThrowIfNull(connectionString);
 
+            //Interceptors
             services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
 
+            //DbContext
             services.AddDbContext<ApplicationDbContext>((sp, options) =>
             {
                 options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
