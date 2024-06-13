@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Commons\Behaviours\" />
+    <Folder Include="Commons\Interfaces\" />
+    <Folder Include="Commons\Exceptions\" />
+    <Folder Include="Procedures\Commands\" />
+    <Folder Include="Procedures\EventHandlers\" />
+    <Folder Include="Procedures\Queries\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Domain\Domain.csproj" />
+  </ItemGroup>
+
+</Project>
