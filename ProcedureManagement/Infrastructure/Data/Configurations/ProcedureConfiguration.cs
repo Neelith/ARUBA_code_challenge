@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
@@ -8,11 +9,15 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Data.Configurations
 {
-    public class ProcedureConfiguration : IEntityTypeConfiguration<ProcedureConfiguration>
+    public class ProcedureConfiguration : IEntityTypeConfiguration<Procedure>
     {
-        public void Configure(EntityTypeBuilder<ProcedureConfiguration> builder)
+        public void Configure(EntityTypeBuilder<Procedure> builder)
         {
-            
+            builder.ToTable("procedures");
+
+            builder.HasKey(p => p.Id);
+
+            builder.Property(procedure => procedure.Id).ValueGeneratedOnAdd();
         }
     }
 }

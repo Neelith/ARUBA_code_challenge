@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Infrastructure.Data.Interceptors;
+using Application.Commons.Interfaces;
 
 namespace Infrastructure
 {
@@ -31,6 +32,8 @@ namespace Infrastructure
 
                 options.UseSqlServer(connectionString);
             });
+
+            services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
 
             return services;
         }

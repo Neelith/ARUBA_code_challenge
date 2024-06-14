@@ -1,4 +1,7 @@
 
+using Infrastructure;
+using Infrastructure.Data;
+using Application;
 using WebApi.Endpoints;
 
 namespace WebApi
@@ -10,6 +13,9 @@ namespace WebApi
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddApplicationServices();
+            builder.Services.AddInfrastructureServices(builder.Configuration);
+
             builder.Services.AddAuthorization();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -23,6 +29,12 @@ namespace WebApi
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
+
+                using var scope = app.Services.CreateScope();
+
+                var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+                dbContext.Database.EnsureCreated();
             }
 
             app.UseHttpsRedirection();
@@ -32,8 +44,7 @@ namespace WebApi
             // Endpoint mapping
             app.MapGroup("api/v1/procedures")
                .MapProcedureEndpoints()
-               .WithGroupName("procedures")
-               .WithOpenApi();
+               .WithGroupName("procedures");
 
             app.Run();
         }
