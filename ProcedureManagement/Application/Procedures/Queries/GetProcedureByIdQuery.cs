@@ -11,18 +11,18 @@ using System.Threading.Tasks;
 
 namespace Application.Procedures.Queries
 {
-    public record GetProcedureQuery (int procedureId) : IRequest<Procedure>;
+    public record GetProcedureByIdQuery (int procedureId) : IRequest<Procedure>;
 
-    public class GetProcedureQueryHandler : IRequestHandler<GetProcedureQuery, Procedure>
+    public class GetProcedureByIdQueryHandler : IRequestHandler<GetProcedureByIdQuery, Procedure>
     {
         private readonly IApplicationDbContext _context;
 
-        public GetProcedureQueryHandler(IApplicationDbContext context)
+        public GetProcedureByIdQueryHandler(IApplicationDbContext context)
         {
             _context = context;
         }
 
-        public async Task<Procedure> Handle(GetProcedureQuery request, CancellationToken cancellationToken)
+        public async Task<Procedure> Handle(GetProcedureByIdQuery request, CancellationToken cancellationToken)
         {
             Procedure? entity = await _context.Procedures.FindAsync([request.procedureId], cancellationToken);
 

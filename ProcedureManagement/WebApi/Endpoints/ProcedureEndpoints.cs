@@ -20,7 +20,7 @@ namespace WebApi.Endpoints
 
         public static async Task<Procedure> GetProcedureByIdAsync(
             [FromServices] ISender sender, 
-            [FromBody] GetProcedureQuery query)
+            [FromBody] GetProcedureByIdQuery query)
         {
             return await sender.Send(query);
         }
@@ -32,9 +32,12 @@ namespace WebApi.Endpoints
             return await sender.Send(createProcedureCommand);
         }
 
-        public static async Task<IResult> UpdateProcedureAsync(ISender sender, int id)
+        public static async Task<IResult> UpdateProcedureAsync(
+            [FromServices] ISender sender,
+            [FromBody] UpdateProcedureCommand updateProcedureCommand)
         {
-            throw new NotImplementedException();
+            await sender.Send(updateProcedureCommand);
+            return Results.NoContent();
         }
 
         public static async Task<IResult> DeleteProcedureAsync(ISender sender, int id)
