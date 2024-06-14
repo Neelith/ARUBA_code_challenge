@@ -1,6 +1,7 @@
 ﻿using Application.Commons.Exceptions;
 using Application.Commons.Interfaces;
 using Domain.Entities;
+using Domain.Events;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -9,20 +10,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Procedures.Queries
+namespace Application.Procedures.Commands
 {
-    public record GetProcedureByIdQuery (int procedureId) : IRequest<Procedure>;
+    public record DeleteProcedureCommand(int procedureId) : IRequest;
 
-    public class GetProcedureByIdQueryHandler : IRequestHandler<GetProcedureByIdQuery, Procedure>
+    public class DeleteProcedureCommandHandler : IRequestHandler<DeleteProcedureCommand>
     {
         private readonly IApplicationDbContext _context;
 
-        public GetProcedureByIdQueryHandler(IApplicationDbContext context)
+        public DeleteProcedureCommandHandler(IApplicationDbContext context)
         {
             _context = context;
         }
 
-        public async Task<Procedure> Handle(GetProcedureByIdQuery request, CancellationToken cancellationToken)
+        public async Task Handle(DeleteProcedureCommand request, CancellationToken cancellationToken)
         {
             Procedure? entity = await _context.Procedures.FindAsync(request.procedureId, cancellationToken);
 
@@ -31,7 +32,11 @@ namespace Application.Procedures.Queries
                 throw new NotFoundException(request.procedureId.ToString(), nameof(Procedure));
             }
 
-            return entity;
+            _context.Procedures.Remove(entity);
+
+            entity.AddDomainEvent(new ProcedureDeletedEvent(entity));
+
+            await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }

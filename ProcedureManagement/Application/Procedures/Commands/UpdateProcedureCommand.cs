@@ -24,7 +24,7 @@ namespace Application.Procedures.Commands
 
         public async Task Handle(UpdateProcedureCommand request, CancellationToken cancellationToken)
         {
-            Procedure? entity = await _context.Procedures.FindAsync([request.procedureId], cancellationToken);
+            Procedure? entity = await _context.Procedures.FindAsync(request.procedureId, cancellationToken);
 
             if (entity is null)
             {

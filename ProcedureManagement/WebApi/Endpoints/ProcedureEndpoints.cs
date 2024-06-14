@@ -13,7 +13,7 @@ namespace WebApi.Endpoints
             group.MapGet("/", GetProcedureByIdAsync);
             group.MapPost("/", CreateProcedureAsync);
             group.MapPut("/", UpdateProcedureAsync);
-            group.MapDelete("/{id}", DeleteProcedureAsync);
+            group.MapDelete("/", DeleteProcedureAsync);
 
             return group;
         }
@@ -40,9 +40,12 @@ namespace WebApi.Endpoints
             return Results.NoContent();
         }
 
-        public static async Task<IResult> DeleteProcedureAsync(ISender sender, int id)
+        public static async Task<IResult> DeleteProcedureAsync(
+            [FromServices] ISender sender,
+            [FromBody] DeleteProcedureCommand deleteProcedureCommand)
         {
-            throw new NotImplementedException();
+            await sender.Send(deleteProcedureCommand);
+            return Results.NoContent();
         }
     }
 }
