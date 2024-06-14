@@ -1,4 +1,7 @@
-﻿using MediatR;
+﻿using Application.Procedures.Commands;
+using Domain.Entities;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Endpoints
 {
@@ -19,9 +22,11 @@ namespace WebApi.Endpoints
             throw new NotImplementedException();
         }
 
-        public static async Task<IResult> CreateProcedureAsync(ISender sender, int id)
+        public static async Task<Procedure> CreateProcedureAsync(
+            [FromServices] ISender sender, 
+            [FromBody] CreateProcedureCommand createProcedureCommand)
         {
-            throw new NotImplementedException();
+            return await sender.Send(createProcedureCommand);
         }
 
         public static async Task<IResult> UpdateProcedureAsync(ISender sender, int id)

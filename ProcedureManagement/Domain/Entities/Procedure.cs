@@ -9,5 +9,9 @@ namespace Domain.Entities
 {
     public class Procedure : BaseAuditableEntity
     {
+        public static Procedure Create()
+        {
+            return new Procedure();
+        }
     }
 }
