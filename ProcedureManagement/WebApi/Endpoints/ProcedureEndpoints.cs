@@ -1,4 +1,5 @@
 ﻿using Application.Procedures.Commands;
+using Application.Procedures.Queries;
 using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +10,7 @@ namespace WebApi.Endpoints
     {
         internal static RouteGroupBuilder MapProcedureEndpoints(this RouteGroupBuilder group)
         {
-            group.MapGet("/{id}", GetProcedureByIdAsync);
+            group.MapGet("/", GetProcedureByIdAsync);
             group.MapPost("/", CreateProcedureAsync);
             group.MapPut("/", UpdateProcedureAsync);
             group.MapDelete("/{id}", DeleteProcedureAsync);
@@ -17,9 +18,11 @@ namespace WebApi.Endpoints
             return group;
         }
 
-        public static async Task<IResult> GetProcedureByIdAsync(ISender sender, int id)
+        public static async Task<Procedure> GetProcedureByIdAsync(
+            [FromServices] ISender sender, 
+            [FromQuery] GetProcedureQuery query)
         {
-            throw new NotImplementedException();
+            return await sender.Send(query);
         }
 
         public static async Task<Procedure> CreateProcedureAsync(
