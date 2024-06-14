@@ -20,7 +20,7 @@ namespace WebApi.Endpoints
 
         public static async Task<Procedure> GetProcedureByIdAsync(
             [FromServices] ISender sender, 
-            [FromQuery] GetProcedureQuery query)
+            [FromBody] GetProcedureQuery query)
         {
             return await sender.Send(query);
         }
