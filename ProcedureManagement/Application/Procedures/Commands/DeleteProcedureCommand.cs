@@ -1,5 +1,5 @@
-﻿using Application.Commons.Exceptions;
-using Application.Commons.Interfaces;
+﻿using Application.Commons.Interfaces;
+using Domain.Common.Exceptions;
 using Domain.Entities;
 using Domain.Events;
 using MediatR;

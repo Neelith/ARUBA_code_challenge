@@ -40,6 +40,8 @@ namespace WebApi
 
             app.UseAuthorization();
 
+            app.UseExceptionHandler(options => { });
+
             // Endpoint mapping
             app.MapGroup("api/v1/procedures")
                .MapProcedureEndpoints();

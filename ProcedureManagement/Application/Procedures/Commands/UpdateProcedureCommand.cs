@@ -47,6 +47,11 @@ namespace Application.Procedures.Commands
             {
                 entity.UpdateAttachment(request.attachmentId.Value, request.newAttachment);
             }
+            
+            if (request.newAttachment is not null && !request.attachmentId.HasValue)
+            {
+                entity.AddAttachment(request.newAttachment);
+            }
 
             entity.AddDomainEvent(new ProcedureUpdatedEvent(entity));
 

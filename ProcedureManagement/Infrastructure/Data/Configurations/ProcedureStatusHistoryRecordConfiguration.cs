@@ -25,7 +25,7 @@ namespace Infrastructure.Data.Configurations
 
             builder.HasOne<Procedure>()
                 .WithMany(procedure => procedure.StatusHistory)
-                .HasForeignKey(attachment => attachment.ProcedureId)
+                .HasForeignKey(record => record.ProcedureId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.NoAction);
         }

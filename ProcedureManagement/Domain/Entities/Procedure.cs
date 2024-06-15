@@ -20,13 +20,13 @@ namespace Domain.Entities
             set => SetProcedureStatus(value);
         }
 
-        private Queue<ProcedureStatusHistoryRecord> _statusHistory;
+        private List<ProcedureStatusHistoryRecord> _statusHistory;
 
         public IReadOnlyCollection<ProcedureStatusHistoryRecord> StatusHistory => _statusHistory.ToList().AsReadOnly();
 
         private List<Attachment> _attachments;
 
-        public IReadOnlyCollection<Attachment> Attachments => _attachments.ToList().AsReadOnly();
+        public IReadOnlyCollection<Attachment> Attachments => _attachments.AsReadOnly();
 
         public static Procedure Create()
         {
@@ -43,7 +43,7 @@ namespace Domain.Entities
 
         public void SetProcedureStatus(ProcedureStatus procedureStatus)
         {
-            _statusHistory.Enqueue(ProcedureStatusHistoryRecord.Create(Id, _currentProcedureStatus));
+            _statusHistory.Add(ProcedureStatusHistoryRecord.Create(Id, _currentProcedureStatus));
             _currentProcedureStatus = procedureStatus;
         }
 

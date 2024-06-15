@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Domain.Common
@@ -16,6 +17,7 @@ namespace Domain.Common
         private readonly List<BaseEvent> _domainEvents = new();
 
         [NotMapped]
+        [JsonIgnore]
         public IReadOnlyCollection<BaseEvent> DomainEvents => _domainEvents.AsReadOnly();
 
         public void AddDomainEvent(BaseEvent domainEvent)
