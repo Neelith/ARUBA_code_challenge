@@ -10,8 +10,8 @@ namespace Domain.Entities
 {
     public class ProcedureStatusHistoryRecord : BaseAuditableEntity
     {
-        public int ProcedureId { get; init; }
-        public ProcedureStatus ProcedureStatus { get; init; }
+        public int ProcedureId { get; internal init; }
+        public ProcedureStatus ProcedureStatus { get; internal init; }
 
         public static ProcedureStatusHistoryRecord Create(int procedureId, ProcedureStatus procedureStatus)
         {

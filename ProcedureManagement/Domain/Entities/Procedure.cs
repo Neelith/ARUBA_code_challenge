@@ -1,4 +1,5 @@
 ﻿using Domain.Common;
+using Domain.Constants;
 using Domain.Enum;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,10 @@ namespace Domain.Entities
 
         public IReadOnlyCollection<ProcedureStatusHistoryRecord> StatusHistory => _statusHistory.ToList().AsReadOnly();
 
+        private List<Attachment> _attachments;
+
+        public IReadOnlyCollection<Attachment> Attachments => _attachments.ToList().AsReadOnly();
+
         public static Procedure Create()
         {
             return new Procedure();
@@ -30,7 +35,8 @@ namespace Domain.Entities
         private Procedure()
         {
             _currentProcedureStatus = ProcedureStatus.Created;
-            _statusHistory = new Queue<ProcedureStatusHistoryRecord>();
+            _statusHistory = new();
+            _attachments = new();
             CreatedOn = DateTime.UtcNow;
         }
 
@@ -38,6 +44,24 @@ namespace Domain.Entities
         {
             _statusHistory.Enqueue(ProcedureStatusHistoryRecord.Create(Id, _currentProcedureStatus));
             _currentProcedureStatus = procedureStatus;
+        }
+
+        public void AddAttachment(byte[] content)
+        {
+            _attachments.Add(Attachment.Create(Id, content));
+        }
+
+        public void UpdateAttachment(int attachmentId, byte[] content)
+        {
+            var attachment = _attachments.Find(x => x.Id == attachmentId);
+
+            if(attachment is null)
+            {
+                //TODO
+                throw new Exception(Errors.AttachmentIdNotFound);
+            }
+
+            attachment.Content = content;
         }
     }
 }
