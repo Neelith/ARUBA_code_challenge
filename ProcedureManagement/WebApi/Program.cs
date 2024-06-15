@@ -3,6 +3,7 @@ using Infrastructure;
 using Infrastructure.Data;
 using Application;
 using WebApi.Endpoints;
+using WebApi.Infrastructure;
 
 namespace WebApi
 {
@@ -15,6 +16,8 @@ namespace WebApi
             // Add services to the container.
             builder.Services.AddApplicationServices();
             builder.Services.AddInfrastructureServices(builder.Configuration);
+
+            builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
             builder.Services.AddAuthorization();
 
