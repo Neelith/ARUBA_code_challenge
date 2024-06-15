@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Constants
 {
-    public class Errors
+    public class DomainErrors
     {
         public const string AttachmentIdNotFound = "The attachment was not found.";
     }

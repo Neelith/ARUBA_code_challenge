@@ -58,7 +58,7 @@ namespace Domain.Entities
             if(attachment is null)
             {
                 //TODO
-                throw new Exception(Errors.AttachmentIdNotFound);
+                throw new Exception(DomainErrors.AttachmentIdNotFound);
             }
 
             attachment.Content = content;

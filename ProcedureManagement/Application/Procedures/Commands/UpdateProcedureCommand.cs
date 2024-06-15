@@ -1,6 +1,8 @@
-﻿using Application.Commons.Exceptions;
+﻿using Application.Commons.Constants;
+using Application.Commons.Exceptions;
 using Application.Commons.Interfaces;
 using Domain.Entities;
+using Domain.Enum;
 using Domain.Events;
 using MediatR;
 using System;
@@ -11,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Application.Procedures.Commands
 {
-    public record UpdateProcedureCommand(int procedureId) : IRequest;
+    public record UpdateProcedureCommand(int procedureId, ProcedureStatus? newStatus, byte[]? newAttachment) : IRequest;
 
     public class UpdateProcedureCommandHandler : IRequestHandler<UpdateProcedureCommand>
     {
@@ -24,6 +26,11 @@ namespace Application.Procedures.Commands
 
         public async Task Handle(UpdateProcedureCommand request, CancellationToken cancellationToken)
         {
+            if(request.newStatus is null && request.newAttachment is null)
+            {
+                throw new BadRequestException(ApplicationErrors.BadRequest);
+            }
+
             Procedure? entity = await _context.Procedures.FindAsync(request.procedureId, cancellationToken);
 
             if (entity is null)
@@ -31,7 +38,15 @@ namespace Application.Procedures.Commands
                 throw new NotFoundException(request.procedureId.ToString(), nameof(Procedure));
             }
 
-            //TODO: Add update logic here
+            if (request.newStatus.HasValue)
+            {
+                entity.CurrentProcedureStatus = request.newStatus.Value;
+            }
+
+            if (request.newAttachment is not null)
+            {
+                entity.AddAttachment(request.newAttachment);
+            }
 
             entity.AddDomainEvent(new ProcedureUpdatedEvent(entity));
 
