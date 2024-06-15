@@ -1,6 +1,6 @@
 ﻿using Application.Commons.Constants;
-using Application.Commons.Exceptions;
 using Application.Commons.Interfaces;
+using Domain.Common.Exceptions;
 using Domain.Entities;
 using Domain.Enum;
 using Domain.Events;
@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Application.Procedures.Commands
 {
-    public record UpdateProcedureCommand(int procedureId, ProcedureStatus? newStatus, byte[]? newAttachment) : IRequest;
+    public record UpdateProcedureCommand(int procedureId, ProcedureStatus? newStatus, int? attachmentId, byte[]? newAttachment) : IRequest;
 
     public class UpdateProcedureCommandHandler : IRequestHandler<UpdateProcedureCommand>
     {
@@ -26,7 +26,7 @@ namespace Application.Procedures.Commands
 
         public async Task Handle(UpdateProcedureCommand request, CancellationToken cancellationToken)
         {
-            if(request.newStatus is null && request.newAttachment is null)
+            if(request.newStatus is null && request.newAttachment is null && request.attachmentId is null)
             {
                 throw new BadRequestException(ApplicationErrors.BadRequest);
             }
@@ -43,9 +43,9 @@ namespace Application.Procedures.Commands
                 entity.CurrentProcedureStatus = request.newStatus.Value;
             }
 
-            if (request.newAttachment is not null)
+            if (request.newAttachment is not null && request.attachmentId.HasValue)
             {
-                entity.AddAttachment(request.newAttachment);
+                entity.UpdateAttachment(request.attachmentId.Value, request.newAttachment);
             }
 
             entity.AddDomainEvent(new ProcedureUpdatedEvent(entity));

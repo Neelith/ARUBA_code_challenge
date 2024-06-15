@@ -1,4 +1,5 @@
 ﻿using Domain.Common;
+using Domain.Common.Exceptions;
 using Domain.Constants;
 using Domain.Enum;
 using System;
@@ -48,20 +49,34 @@ namespace Domain.Entities
 
         public void AddAttachment(byte[] content)
         {
+            if (!IsProcedureUpdateable())
+            {
+                throw new BadRequestException(DomainErrors.ProcedureNotUpdateable);
+            }
+
             _attachments.Add(Attachment.Create(Id, content));
         }
 
         public void UpdateAttachment(int attachmentId, byte[] content)
         {
+            if (!IsProcedureUpdateable())
+            {
+                throw new BadRequestException(DomainErrors.ProcedureNotUpdateable);
+            }
+
             var attachment = _attachments.Find(x => x.Id == attachmentId);
 
-            if(attachment is null)
+            if (attachment is null)
             {
-                //TODO
-                throw new Exception(DomainErrors.AttachmentIdNotFound);
+                throw new BadRequestException(DomainErrors.AttachmentNotFound);
             }
 
             attachment.Content = content;
+        }
+
+        private bool IsProcedureUpdateable()
+        {
+            return _currentProcedureStatus == ProcedureStatus.Created;
         }
     }
 }
