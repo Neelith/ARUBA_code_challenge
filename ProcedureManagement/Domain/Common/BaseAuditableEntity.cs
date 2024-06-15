@@ -8,12 +8,8 @@ namespace Domain.Common
 {
     public abstract class BaseAuditableEntity : BaseEntity
     {
-        public DateTimeOffset Created { get; set; }
+        public DateTimeOffset CreatedOn { get; init; }
 
-        public string? CreatedBy { get; set; }
-
-        public DateTimeOffset LastModified { get; set; }
-
-        public string? LastModifiedBy { get; set; }
+        public DateTimeOffset LastModifiedOn { get; set; }
     }
 }
