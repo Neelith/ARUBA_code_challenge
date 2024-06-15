@@ -10,6 +10,6 @@ namespace Domain.Common
     {
         public DateTimeOffset CreatedOn { get; internal init; }
 
-        public DateTimeOffset LastModifiedOn { get; internal set; }
+        public DateTimeOffset? LastModifiedOn { get; internal set; }
     }
 }

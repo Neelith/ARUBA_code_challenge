@@ -15,9 +15,27 @@ namespace Infrastructure.Data.Configurations
         {
             builder.ToTable("procedures");
 
-            builder.HasKey(p => p.Id);
+            builder.HasKey(e => e.Id);
 
-            builder.Property(procedure => procedure.Id).ValueGeneratedOnAdd();
+            builder.Property(entity => entity.Id).ValueGeneratedOnAdd();
+
+            builder.Property(entity => entity.CreatedOn).IsRequired();
+
+            builder.Property(entity => entity.LastModifiedOn).IsRequired(false);
+
+            builder.Property(procedure => procedure.CurrentProcedureStatus).IsRequired();
+
+            builder
+                .HasMany(p => p.Attachments)
+                .WithOne()
+                .HasForeignKey(a => a.ProcedureId)
+                .IsRequired();
+
+            builder
+                .HasMany(p => p.StatusHistory)
+                .WithOne()
+                .HasForeignKey(a => a.ProcedureId)
+                .IsRequired();
         }
     }
 }
