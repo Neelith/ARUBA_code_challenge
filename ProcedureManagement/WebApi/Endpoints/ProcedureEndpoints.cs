@@ -10,9 +10,14 @@ namespace WebApi.Endpoints
     {
         internal static RouteGroupBuilder MapProcedureEndpoints(this RouteGroupBuilder group)
         {
+            //Disabled antiforgery because it is enabled by default in minimal APIs and threw some exceptions
+            //but I don't need it since we don't have auth cookies in this case.
+            //Of course this is an example project and it's not production ready.
             group.MapGet("/", GetProcedureByIdAsync);
-            group.MapPost("/", CreateProcedureAsync);
-            group.MapPut("/", UpdateProcedureAsync);
+            group.MapPost("/", CreateProcedureAsync)
+                .DisableAntiforgery();
+            group.MapPut("/", UpdateProcedureAsync)
+                .DisableAntiforgery();
             group.MapDelete("/", DeleteProcedureAsync);
 
             return group;
@@ -27,14 +32,14 @@ namespace WebApi.Endpoints
 
         public static async Task<Procedure> CreateProcedureAsync(
             [FromServices] ISender sender, 
-            [FromBody] CreateProcedureCommand createProcedureCommand)
+            [FromForm] CreateProcedureCommand createProcedureCommand)
         {
             return await sender.Send(createProcedureCommand);
         }
 
         public static async Task<IResult> UpdateProcedureAsync(
             [FromServices] ISender sender,
-            [FromBody] UpdateProcedureCommand updateProcedureCommand)
+            [FromForm] UpdateProcedureCommand updateProcedureCommand)
         {
             await sender.Send(updateProcedureCommand);
             return Results.NoContent();

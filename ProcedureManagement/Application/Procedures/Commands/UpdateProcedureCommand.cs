@@ -1,10 +1,12 @@
 ﻿using Application.Commons.Constants;
 using Application.Commons.Interfaces;
+using Application.Services.FileReaderService;
 using Domain.Common.Exceptions;
 using Domain.Entities;
 using Domain.Enum;
 using Domain.Events;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,15 +15,17 @@ using System.Threading.Tasks;
 
 namespace Application.Procedures.Commands
 {
-    public record UpdateProcedureCommand(int procedureId, ProcedureStatus? newStatus, int? attachmentId, byte[]? newAttachment) : IRequest;
+    public record UpdateProcedureCommand(int procedureId, ProcedureStatus? newStatus, int? attachmentId, IFormFile? newAttachment) : IRequest;
 
     public class UpdateProcedureCommandHandler : IRequestHandler<UpdateProcedureCommand>
     {
         private readonly IApplicationDbContext _context;
+        private readonly IFileReaderService _fileReaderService;
 
-        public UpdateProcedureCommandHandler(IApplicationDbContext context)
+        public UpdateProcedureCommandHandler(IApplicationDbContext context, IFileReaderService fileReaderService)
         {
             _context = context;
+            _fileReaderService = fileReaderService;
         }
 
         public async Task Handle(UpdateProcedureCommand request, CancellationToken cancellationToken)
@@ -38,19 +42,17 @@ namespace Application.Procedures.Commands
                 throw new NotFoundException(request.procedureId.ToString(), nameof(Procedure));
             }
 
-            if (request.newStatus.HasValue)
+            bool hasNewAttachment = request.newAttachment is not null;
+            if (hasNewAttachment)
             {
-                entity.CurrentProcedureStatus = request.newStatus.Value;
+                byte[] content = await _fileReaderService.ReadFileContentAsync(request.newAttachment!);
+                entity.AddOrUpdateAttachment(content, request.newAttachment!.FileName, request.attachmentId);
             }
 
-            if (request.newAttachment is not null && request.attachmentId.HasValue)
+            bool hasNewStatus = request.newStatus.HasValue;
+            if (hasNewStatus)
             {
-                entity.UpdateAttachment(request.attachmentId.Value, request.newAttachment);
-            }
-            
-            if (request.newAttachment is not null && !request.attachmentId.HasValue)
-            {
-                entity.AddAttachment(request.newAttachment);
+                entity.CurrentProcedureStatus = request.newStatus!.Value;
             }
 
             entity.AddDomainEvent(new ProcedureUpdatedEvent(entity));

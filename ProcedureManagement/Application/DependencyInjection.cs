@@ -1,4 +1,5 @@
 ﻿using Application.Commons.Behaviours;
+using Application.Services.FileReaderService;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -18,6 +19,8 @@ namespace Application
                 cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
                 cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehaviour<,>));
             });
+
+            services.AddSingleton<IFileReaderService, FileReaderService>();
 
             return services;
         }

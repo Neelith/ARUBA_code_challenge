@@ -11,29 +11,28 @@ namespace Domain.Entities
     {
         public int ProcedureId { get; internal init; }
 
-        private byte[] _content;
+        public byte[] Content { get; private set; }
 
-        public byte[] Content 
-        { 
-            get => _content; 
-            internal set => SetContent(value);
-        }
+        public string FileName { get; private set; }
 
-        private void SetContent(byte[] value)
+
+        public void SetContent(byte[] content, string fileName)
         {
             this.LastModifiedOn = DateTime.UtcNow;
-            this._content = value;
+            this.Content = content;
+            this.FileName = fileName;
         }
 
-        public static Attachment Create(int procedureId, byte[] content)
+        public static Attachment Create(int procedureId, byte[] content, string fileName)
         {
-            return new Attachment(procedureId, content);
+            return new Attachment(procedureId, content, fileName);
         }
 
-        private Attachment(int procedureId, byte[] content)
+        private Attachment(int procedureId, byte[] content, string fileName)
         {
             this.ProcedureId = procedureId;
-            this._content = content;
+            this.Content = content;
+            this.FileName = fileName;
             this.CreatedOn = DateTime.UtcNow;
         }
     }
