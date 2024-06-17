@@ -7,6 +7,7 @@ using Domain.Enum;
 using Domain.Events;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +36,9 @@ namespace Application.Procedures.Commands
                 throw new BadRequestException(ApplicationErrors.BadRequest);
             }
 
-            Procedure? entity = await _context.Procedures.FindAsync(request.procedureId, cancellationToken);
+            Procedure? entity = await _context.Procedures
+                .Include(procedure => procedure.Attachments)
+                .FirstOrDefaultAsync(procedure => procedure.Id == request.procedureId, cancellationToken);
 
             if (entity is null)
             {

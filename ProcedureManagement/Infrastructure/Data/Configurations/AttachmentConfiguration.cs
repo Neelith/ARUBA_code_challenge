@@ -29,7 +29,7 @@ namespace Infrastructure.Data.Configurations
                 .WithMany(procedure => procedure.Attachments)
                 .HasForeignKey(attachment => attachment.ProcedureId)
                 .IsRequired()
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

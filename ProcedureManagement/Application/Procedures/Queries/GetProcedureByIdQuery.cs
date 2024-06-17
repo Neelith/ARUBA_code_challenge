@@ -24,7 +24,10 @@ namespace Application.Procedures.Queries
 
         public async Task<Procedure> Handle(GetProcedureByIdQuery request, CancellationToken cancellationToken)
         {
-            Procedure? entity = await _context.Procedures.FindAsync(request.procedureId, cancellationToken);
+            Procedure? entity = await _context.Procedures
+                .Include(procedure => procedure.Attachments)
+                .Include(procedure => procedure.StatusHistory)
+                .FirstOrDefaultAsync(procedure => procedure.Id == request.procedureId, cancellationToken);
 
             if (entity is null)
             {

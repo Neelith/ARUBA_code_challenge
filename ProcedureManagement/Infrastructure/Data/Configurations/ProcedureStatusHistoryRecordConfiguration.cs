@@ -27,7 +27,7 @@ namespace Infrastructure.Data.Configurations
                 .WithMany(procedure => procedure.StatusHistory)
                 .HasForeignKey(record => record.ProcedureId)
                 .IsRequired()
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
