@@ -4,7 +4,7 @@ using Infrastructure;
 using Infrastructure.Data;
 using Serilog;
 using WebApi.Endpoints;
-using WebApi.Infrastructure;
+using WebApi.ExceptionHandler;
 
 namespace WebApi
 {

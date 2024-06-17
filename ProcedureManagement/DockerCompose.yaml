@@ -1,0 +1,23 @@
+version: '1.0'
+services:
+    sql-server-2022:
+        build:
+            context: .
+            dockerfile: Database/Dockerfile
+        container_name: sql-server-2022
+        ports: 
+            - "1433:1433"
+        environment:
+            - ACCEPT_EULA=Y
+            - SA_PASSWORD=SuperLong@ndSecurePassw0rd
+    procedure-management-webapi:
+        build:
+            context: .
+            dockerfile: WebApi/Dockerfile
+        container_name: procedure-management-webapi
+        ports:
+            - "8080:80"
+            - "8443:443"
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Production
+            - ASPNETCORE_HTTP_PORTS=80;8080
