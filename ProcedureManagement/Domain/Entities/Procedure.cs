@@ -2,12 +2,6 @@
 using Domain.Common.Exceptions;
 using Domain.Constants;
 using Domain.Enum;
-using Domain.Events;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
@@ -15,9 +9,9 @@ namespace Domain.Entities
     {
         private ProcedureStatus _currentProcedureStatus;
 
-        public ProcedureStatus CurrentProcedureStatus 
-        { 
-            get => _currentProcedureStatus; 
+        public ProcedureStatus CurrentProcedureStatus
+        {
+            get => _currentProcedureStatus;
             set => SetProcedureStatus(value);
         }
 

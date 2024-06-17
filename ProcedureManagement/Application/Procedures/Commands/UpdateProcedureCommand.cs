@@ -8,11 +8,6 @@ using Domain.Events;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Procedures.Commands
 {
@@ -31,7 +26,7 @@ namespace Application.Procedures.Commands
 
         public async Task Handle(UpdateProcedureCommand request, CancellationToken cancellationToken)
         {
-            if(request.newStatus is null && request.newAttachment is null && request.attachmentId is null)
+            if (request.newStatus is null && request.newAttachment is null && request.attachmentId is null)
             {
                 throw new BadRequestException(ApplicationErrors.BadRequest);
             }

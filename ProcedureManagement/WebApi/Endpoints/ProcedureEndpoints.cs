@@ -24,14 +24,14 @@ namespace WebApi.Endpoints
         }
 
         public static async Task<Procedure> GetProcedureByIdAsync(
-            [FromServices] ISender sender, 
+            [FromServices] ISender sender,
             [FromBody] GetProcedureByIdQuery query)
         {
             return await sender.Send(query);
         }
 
         public static async Task<Procedure> CreateProcedureAsync(
-            [FromServices] ISender sender, 
+            [FromServices] ISender sender,
             [FromForm] CreateProcedureCommand createProcedureCommand)
         {
             return await sender.Send(createProcedureCommand);

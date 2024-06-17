@@ -1,10 +1,10 @@
 
+using Application;
 using Infrastructure;
 using Infrastructure.Data;
-using Application;
+using Serilog;
 using WebApi.Endpoints;
 using WebApi.Infrastructure;
-using Serilog;
 
 namespace WebApi
 {
@@ -12,7 +12,7 @@ namespace WebApi
     {
         public static void Main(string[] args)
         {
-            
+
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.Console()
                 .CreateLogger();

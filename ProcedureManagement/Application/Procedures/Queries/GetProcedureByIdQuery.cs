@@ -3,15 +3,10 @@ using Domain.Common.Exceptions;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Procedures.Queries
 {
-    public record GetProcedureByIdQuery (int procedureId) : IRequest<Procedure>;
+    public record GetProcedureByIdQuery(int procedureId) : IRequest<Procedure>;
 
     public class GetProcedureByIdQueryHandler : IRequestHandler<GetProcedureByIdQuery, Procedure>
     {

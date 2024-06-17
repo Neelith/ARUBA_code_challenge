@@ -1,17 +1,9 @@
-﻿using Application.Commons.Constants;
-using Application.Commons.Interfaces;
+﻿using Application.Commons.Interfaces;
 using Application.Services.FileReaderService;
-using Domain.Common.Exceptions;
 using Domain.Entities;
 using Domain.Events;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Procedures.Commands
 {

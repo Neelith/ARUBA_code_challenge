@@ -1,9 +1,6 @@
 ﻿using Domain.Common.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
-using System.Net.Http;
 
 namespace WebApi.Infrastructure
 {
