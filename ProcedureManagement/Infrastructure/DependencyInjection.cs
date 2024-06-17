@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Infrastructure.Data.Interceptors;
 using Application.Commons.Interfaces;
+using Serilog;
 
 namespace Infrastructure
 {
@@ -32,6 +33,10 @@ namespace Infrastructure
 
                 options.UseSqlServer(connectionString);
             });
+
+            services.AddSerilog((services, lc) => lc
+                    .ReadFrom.Configuration(configuration)
+                    .ReadFrom.Services(services));
 
             services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
 
