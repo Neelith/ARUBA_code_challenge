@@ -19,6 +19,8 @@ namespace WebApi
 
             builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
+            builder.Services.AddHealthChecks();
+
             builder.Services.AddAuthorization();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -35,6 +37,8 @@ namespace WebApi
 
                 dbContext.Database.EnsureCreated();
             }
+
+            app.UseHealthChecks("/health");
 
             app.UseHttpsRedirection();
 
